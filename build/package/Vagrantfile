@@ -1,0 +1,17 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# target bionic64 for dev container.
+Vagrant::Config.run do |config|
+  config.vm.box = "bionic64"
+  config.vm.box_url = "https://cloud-images.ubuntu.com/bionic/current/bionic-server-cloudimg-amd64-vagrant.box"
+  # vulcan-beacon
+  config.vm.forward_port 8000, 8000
+  # vulcan-katric
+  config.vm.forward_port 8001, 8001
+  # vulcan-scuttlebutt
+  config.vm.forward_port 8002, 8002
+  # vulcan-ellipsis
+  config.vm.forward_port 8003, 8003
+  config.vm.provision :shell, :path => 'provision.sh'
+end
