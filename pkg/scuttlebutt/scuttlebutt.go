@@ -7,7 +7,6 @@ import (
 	"github.com/ajduncan/vulcan/pkg/services"
 )
 
-
 func ReportHandler(w http.ResponseWriter, r *http.Request) {
 	// todo
 	w.WriteHeader(200)

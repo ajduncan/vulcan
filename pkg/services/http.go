@@ -10,13 +10,13 @@ import (
 	"net/http"
 	"time"
 
-  "github.com/gorilla/mux"
+	"github.com/gorilla/mux"
 )
 
 type VulcanService struct {
 	Instance string
-	Address string
-	Router *mux.Router
+	Address  string
+	Router   *mux.Router
 }
 
 // NotFoundHandler provides a default not found handler for the instance.
@@ -41,7 +41,7 @@ func (vs *VulcanService) HomeHandler(w http.ResponseWriter, r *http.Request) {
 		vs.NotFoundHandler(w, r)
 	} else {
 		w.WriteHeader(http.StatusOK)
-		tmpl.ExecuteTemplate(w, "base", struct { Data string }{ Data: "data"})
+		tmpl.ExecuteTemplate(w, "base", struct{ Data string }{Data: "data"})
 	}
 }
 
@@ -65,7 +65,7 @@ func (vs *VulcanService) PageHandler(w http.ResponseWriter, r *http.Request) {
 		vs.NotFoundHandler(w, r)
 	} else {
 		w.WriteHeader(http.StatusOK)
-		tmpl.ExecuteTemplate(w, "base", struct { Data string }{ Data: "data"})
+		tmpl.ExecuteTemplate(w, "base", struct{ Data string }{Data: "data"})
 	}
 }
 
@@ -77,11 +77,11 @@ func NewVulcanService(instance string, address string) *VulcanService {
 	vs.Instance = instance
 	vs.Address = address
 
-  r := mux.NewRouter()
-  r.NotFoundHandler = http.HandlerFunc(vs.NotFoundHandler)
+	r := mux.NewRouter()
+	r.NotFoundHandler = http.HandlerFunc(vs.NotFoundHandler)
 	r.HandleFunc("/favicon.ico", vs.FavicoHandler)
-  r.HandleFunc("/", vs.HomeHandler)
-  r.HandleFunc("/health", vs.HealthCheckHandler)
+	r.HandleFunc("/", vs.HomeHandler)
+	r.HandleFunc("/health", vs.HealthCheckHandler)
 	r.HandleFunc("/page/{page}.html", vs.PageHandler)
 
 	vs.Router = r
@@ -91,12 +91,12 @@ func NewVulcanService(instance string, address string) *VulcanService {
 // Creates a new net/http service with a VulcanService configuration,
 // then run the http.Server
 func (vs *VulcanService) RunVulcanServer() {
-  server := &http.Server{
-    Handler:      vs.Router,
-    Addr:         vs.Address,
-    WriteTimeout: 15 * time.Second,
-    ReadTimeout:  15 * time.Second,
-  }
+	server := &http.Server{
+		Handler:      vs.Router,
+		Addr:         vs.Address,
+		WriteTimeout: 15 * time.Second,
+		ReadTimeout:  15 * time.Second,
+	}
 	fmt.Printf("Serving %v for analytics on: %v.\n", vs.Instance, vs.Address)
-  log.Fatal(server.ListenAndServe())
+	log.Fatal(server.ListenAndServe())
 }
