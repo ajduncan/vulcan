@@ -1,0 +1,26 @@
+{{define "payload"}}
+<script>
+  // https://developer.mozilla.org/en-US/docs/Web/API/Beacon_API/Using_the_Beacon_API
+  window.onload = window.onunload = function analytics(event) {
+    if (!navigator.sendBeacon) return; // use XMLHttpRequest()?
+
+    var url = "http://localhost:8000/api/v1/beacon";
+
+    // Create the data to send, do not use FormData as it increases overhead.
+    var data = "state=" + event.type +
+               "&location=" + location.href
+    ;
+
+    // Send the beacon
+    var status = navigator.sendBeacon(url, data);
+
+    // Log the data and result
+    console.log("sendBeacon: URL = ", url, "; data = ", data, "; status = ", status);
+  };
+</script>
+{{end}}
+
+{{define "content"}}
+<p>Ellipsis ...</p>
+<p>The javascript in the header made a Web API call to the Beacon service.</p>
+{{end}}

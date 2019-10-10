@@ -13,6 +13,10 @@ GOBASE := $(shell pwd)
 GOBIN := $(GOBASE)/bin
 GOFILES := $(wildcard *.go)
 
+# Compiled project related assets
+WEBFOLDER := web
+WEBASSETS := $(GOBASE)/$(WEBFOLDER)
+
 # Use linker flags to provide version/build settings
 LDFLAGS=-ldflags "-X=main.Version=$(VERSION) -X=main.Build=$(BUILD)"
 
@@ -48,6 +52,7 @@ compile:
 	@-touch $(STDERR)
 	@-rm $(STDERR)
 	@-$(MAKE) -s go-compile 2> $(STDERR)
+	@-$(MAKE) -s copy-assets 2> $(STDERR)
 	@cat $(STDERR) | sed -e '1s/.*/\nError:\n/'  | sed 's/make\[.*/ /' | sed "/^/s/^/     /" 1>&2
 
 ## exec: Run given command, wrapped with custom GOPATH. e.g; make exec run="go test ./..."
@@ -57,7 +62,12 @@ exec:
 ## clean: Clean build files. Runs `go clean` internally.
 clean:
 	@-rm $(GOBIN)/$(PROJECTNAME) 2> /dev/null
+	@-rm -rf $(GOBIN)/$(WEBFOLDER) 2> /dev/null
 	@-$(MAKE) go-clean
+
+copy-assets:
+	@echo "  > Copying assets..."
+	@-cp -R $(WEBASSETS) $(GOBIN)/
 
 go-compile: go-get go-build
 

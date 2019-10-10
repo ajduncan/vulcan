@@ -2,39 +2,28 @@ package beacon
 
 import (
 	"fmt"
-	"log"
+	"io/ioutil"
 	"net/http"
-	"time"
-
-	"github.com/gorilla/mux"
 
 	"github.com/ajduncan/vulcan/internal/vulcan"
+	"github.com/ajduncan/vulcan/pkg/services"
 )
 
 func BeaconHandler(w http.ResponseWriter, r *http.Request) {
 	// Send a response first and log the data
-	w.WriteHeader(204)
+	w.WriteHeader(http.StatusNoContent)
 
-	vars := mux.Vars(r)
-	// q := r.URL.Query()
-	fmt.Fprintf(w, "Image guid: %v\n", vars["guid"])
-}
-
-func Serve() {
-	r := mux.NewRouter()
-	r.HandleFunc("/", vulcan.HomeHandler)
-	r.HandleFunc("/health", vulcan.HealthCheckHandler)
-
-	// Should the image be unique to the site?
-	r.HandleFunc("/beacon/{guid}/0.gif", BeaconHandler)
-
-	srv := &http.Server{
-		Handler:      r,
-		Addr:         vulcan.Getenv("BEACON_HOST", "127.0.0.1") + ":" + vulcan.Getenv("BEACON_PORT", "8000"),
-		WriteTimeout: 15 * time.Second,
-		ReadTimeout:  15 * time.Second,
+	b, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Fprintf(w, "Error reading request body: %v", err)
 	}
 
-	fmt.Printf("Serving beacon for analytics.\n")
-	log.Fatal(srv.ListenAndServe())
+	fmt.Printf("POST request body: %s\n", b)
+}
+
+func RunBeaconService() {
+	address := vulcan.Getenv("BEACON_HOST", "127.0.0.1") + ":" + vulcan.Getenv("BEACON_PORT", "8000")
+	vs := services.NewVulcanService("beacon", address)
+	vs.Router.HandleFunc("/api/v1/beacon", BeaconHandler)
+	vs.RunVulcanServer()
 }

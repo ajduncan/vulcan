@@ -38,7 +38,7 @@ var beaconCmd = &cobra.Command{
   Short: "Run the beacon analytics endpoint.",
   Long:  `Run the beacon analytics endpoint.`,
   Run: func(cmd *cobra.Command, args []string) {
-    beacon.Serve()
+    beacon.RunBeaconService()
   },
 }
 
@@ -47,7 +47,7 @@ var katricCmd = &cobra.Command{
   Short: "Run the katric db interface api.",
   Long:  `Run the katric db interface api.`,
   Run: func(cmd *cobra.Command, args []string) {
-    katric.Serve()
+    katric.RunKatricService()
   },
 }
 
@@ -56,7 +56,7 @@ var scuttlebuttCmd = &cobra.Command{
   Short: "Run the analytics reporting service.",
   Long:  `Run the analytics reporting service.`,
   Run: func(cmd *cobra.Command, args []string) {
-    scuttlebutt.Serve()
+    scuttlebutt.RunScuttlebuttService()
   },
 }
 
@@ -65,7 +65,7 @@ var ellipsisCmd = &cobra.Command{
   Short: "Run the ellipsis documentation and testing api.",
   Long:  `Run the ellipsis documentation and testing api.`,
   Run: func(cmd *cobra.Command, args []string) {
-    ellipsis.Serve()
+    ellipsis.RunEllipsisService()
   },
 }
 
