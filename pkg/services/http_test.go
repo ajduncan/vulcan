@@ -13,16 +13,16 @@ import (
 )
 
 var (
-  cwd_arg = flag.String("cwd", "", "set cwd")
+	cwd_arg = flag.String("cwd", "", "set cwd")
 )
 
 func init() {
-  flag.Parse()
-  if *cwd_arg != "" {
-    if err := os.Chdir(*cwd_arg); err != nil {
-        fmt.Println("Chdir error:", err)
-    }
-  }
+	flag.Parse()
+	if *cwd_arg != "" {
+		if err := os.Chdir(*cwd_arg); err != nil {
+			fmt.Println("Chdir error:", err)
+		}
+	}
 }
 
 func TestNotFoundHandler(t *testing.T) {
