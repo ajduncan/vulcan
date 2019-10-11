@@ -45,7 +45,7 @@ lint:
 
 ## Run `go test` against all packages.
 test:
-	go test ./pkg/...
+	go test ./pkg/... -cwd="$(GOBASE)"
 
 ## compile: Compile the binary.
 compile:
