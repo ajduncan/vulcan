@@ -20,6 +20,7 @@ Some discussion points and questions include:
 1. Why Go?
 2. Why Scylla?
 3. Privacy and the GDPR?
+4. Accuracy, Fake Data
 
 ## Why Go? ##
 
@@ -209,6 +210,33 @@ is a regulation in EU law on data protection and privacy.
 
 See [this article](https://www.eff.org/deeplinks/2018/06/gdpr-and-browser-fingerprinting-how-it-changes-game-sneakiest-web-trackers),
 under the section Fingerprinting after the GDPR.
+
+## Accuracy, Fake Data ##
+
+When you view the source for a page and see the tracking ID used for a beacon,
+you could simply generate fake traffic using that ID.  How would an analytics
+platform counter this kind of attack?  To ensure the *origin* of the request
+comes from the subject being tracked, e.g. the web site URL, the server hosting
+the site may need to provide logging data that, when combined with the beacon,
+authenticates it as legitimate - or more legitimate - traffic.  
+
+A naive approach to this combination would be to flag Scylla's records with an
+authenticated status:
+
+  1. If a composit model with the generalized IP and timestamp generally agrees,
+     the record is authentic.
+  2. If a composit model exists without generalized ip/timestamp agreement, then
+     the record is not authentic.
+  3. If a composit model does not exist, we say the record is plausible.
+
+This way the analytics report insight can be adjusted to treat plausible
+information as accurate, or at the user's discretion, show only authentic data
+in reports.
+
+Other methods could be used in the VA platform which others seem to use,
+including black lists for IPs and behavioral models that match against fakes.
+This probably won't work for us, so we should encourage anything that creates
+a good composit model of log file and client beacon.  
 
 ## requests ##
 

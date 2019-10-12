@@ -13,7 +13,10 @@ See golang-standards [project layout](https://github.com/golang-standards/projec
 
 ## best practices ##
 
-Where possible, follow the best practices for [effective go](https://golang.org/doc/effective_go.html).
+Where possible, follow established best practices.  See:
+
+  1. [effective go](https://golang.org/doc/effective_go.html).
+  2. [The Uber Go Style Guide](https://github.com/uber-go/guide)
 
 ## test-driven software development ##
 

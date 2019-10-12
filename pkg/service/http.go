@@ -1,6 +1,6 @@
-// services includes generic handlers, net/http and mux code for instances of
+// service includes generic handlers, net/http and mux code for instances of
 // servers with API endpoints further defined within their respective packages.
-package services
+package service
 
 import (
 	"fmt"
@@ -14,9 +14,10 @@ import (
 )
 
 type VulcanService struct {
+	Router   *mux.Router
+
 	Instance string
 	Address  string
-	Router   *mux.Router
 }
 
 // NotFoundHandler provides a default not found handler for the instance.
@@ -73,18 +74,19 @@ func (vs *VulcanService) PageHandler(w http.ResponseWriter, r *http.Request) {
 // instance is a key that will be used in loading templates, static files, etc.
 // address is the host and port to listen on
 func NewVulcanService(instance string, address string) *VulcanService {
-	vs := new(VulcanService)
-	vs.Instance = instance
-	vs.Address = address
-
 	r := mux.NewRouter()
+	vs := &VulcanService{
+		Instance: instance,
+		Address: address,
+		Router: r,
+	}
+
 	r.NotFoundHandler = http.HandlerFunc(vs.NotFoundHandler)
 	r.HandleFunc("/favicon.ico", vs.FavicoHandler)
 	r.HandleFunc("/", vs.HomeHandler)
 	r.HandleFunc("/health", vs.HealthCheckHandler)
 	r.HandleFunc("/page/{page}.html", vs.PageHandler)
 
-	vs.Router = r
 	return vs
 }
 
@@ -97,6 +99,6 @@ func (vs *VulcanService) RunVulcanServer() {
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
-	fmt.Printf("Serving %v for analytics on: %v.\n", vs.Instance, vs.Address)
+	fmt.Printf("%v serving on: %v.\n", vs.Instance, vs.Address)
 	log.Fatal(server.ListenAndServe())
 }
