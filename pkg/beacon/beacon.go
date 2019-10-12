@@ -27,19 +27,8 @@ func BeaconHandler(w http.ResponseWriter, r *http.Request) {
 	pl := tracker.NewPayload(m /* urldict */)
 
 	// event tracker for a site
-	t := tracker.NewTracker(pl /* payload */, "test" /* id */, "testsite" /* subject */)
-
-	fmt.Printf("POST request body: %s\n", b)
-	fmt.Printf("Tracker: %v\n", t)
-	fmt.Printf("Payload: %v\n", t.Payload)
-
-	fmt.Printf("Payload state: %v\n", t.Payload.Get("state"))
-	fmt.Printf("Tracker version: %v\n", t.Version)
-	fmt.Printf("Tracker timestamp: %v\n", t.Timestamp)
-	fmt.Printf("Tracker id: %v\n", t.Id)
-	fmt.Printf("Tracker subject: %v\n", t.Subject)
-	fmt.Printf("Payload state: %v\n", t.Payload.Get("state"))
-
+	t := tracker.NewTracker(pl /* payload */, pl.Get("id") /* id */, pl.Get("subject") /* subject */)
+	t.Print()
 }
 
 func RunBeaconService() {

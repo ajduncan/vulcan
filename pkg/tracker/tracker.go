@@ -1,6 +1,7 @@
 package tracker
 
 import (
+	"fmt"
 	"reflect"
 	"time"
 )
@@ -78,4 +79,13 @@ func (t *Tracker) AddProperty(key string, value string) {
 	if v.IsValid() {
 		v.SetString(value)
 	}
+}
+
+// Print prints diagnostic information about the tracker and payload.
+func (t *Tracker) Print() {
+	fmt.Printf("Tracker version: %v\n", t.Version)
+	fmt.Printf("Tracker timestamp: %v\n", t.Timestamp)
+	fmt.Printf("Tracker id: %v\n", t.Id)
+	fmt.Printf("Tracker subject: %v\n", t.Subject)
+	fmt.Printf("Payload: %v\n", t.Payload)
 }

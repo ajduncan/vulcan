@@ -14,7 +14,7 @@ import (
 )
 
 type VulcanService struct {
-	Router   *mux.Router
+	Router *mux.Router
 
 	Instance string
 	Address  string
@@ -77,8 +77,8 @@ func NewVulcanService(instance string, address string) *VulcanService {
 	r := mux.NewRouter()
 	vs := &VulcanService{
 		Instance: instance,
-		Address: address,
-		Router: r,
+		Address:  address,
+		Router:   r,
 	}
 
 	r.NotFoundHandler = http.HandlerFunc(vs.NotFoundHandler)

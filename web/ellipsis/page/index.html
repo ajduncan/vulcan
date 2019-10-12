@@ -2,12 +2,15 @@
 <script>
   // https://developer.mozilla.org/en-US/docs/Web/API/Beacon_API/Using_the_Beacon_API
   window.onload = window.onunload = function analytics(event) {
-    if (!navigator.sendBeacon) return; // use XMLHttpRequest()?
+    if (!navigator.sendBeacon) return; // use XMLHttpRequest()? - or embed image if not javascript.
 
     var url = "http://localhost:8000/api/v1/beacon";
 
     // Create the data to send, do not use FormData as it increases overhead.
     var data = "state=" + event.type +
+               "&subject=" + "inferred" +
+               "&id=" + "siteid1234" +
+               "&notvalid=" + "discarded" +
                "&location=" + location.href
     ;
 

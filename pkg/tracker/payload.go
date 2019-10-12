@@ -1,5 +1,14 @@
 package tracker
 
+// validkeys contains a list of valid payload keys.
+// this should be defined in a file later for more flexibility.
+var validkeys = []string{
+	"id",
+	"subject",
+	"state",
+	"location",
+}
+
 // WCSPayload provides the most flexibility to arbitrarily inject key/value pairs
 // which ultimately go into a nosql store (a wide column store) for analytics.
 type WCSPayload struct {
@@ -18,10 +27,14 @@ func NewPayload(urldict map[string][]string) *WCSPayload {
 
 // Add accepts a key value pair and adds them to the store.
 // If either key or value is empty, discard the pair.
+// If the key is not valid, discard.
 func (p *WCSPayload) Add(key string, value string) {
 	if key != "" && value != "" {
-		// pre-validate certain keys?
-		p.wcs[key] = value
+		for _, v := range validkeys {
+			if v == key {
+				p.wcs[key] = value
+			}
+		}
 	}
 }
 
