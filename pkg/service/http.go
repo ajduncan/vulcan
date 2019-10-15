@@ -84,7 +84,7 @@ func NewVulcanService(instance string, address string) *VulcanService {
 	r.NotFoundHandler = http.HandlerFunc(vs.NotFoundHandler)
 	r.HandleFunc("/favicon.ico", vs.FavicoHandler)
 	r.HandleFunc("/", vs.HomeHandler)
-	r.HandleFunc("/health", vs.HealthCheckHandler)
+	r.HandleFunc("/healthcheck", vs.HealthCheckHandler)
 	r.HandleFunc("/page/{page}.html", vs.PageHandler)
 
 	return vs

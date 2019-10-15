@@ -95,7 +95,7 @@ func TestHomeHandler(t *testing.T) {
 func TestHealthCheckHandler(t *testing.T) {
 	vs := new(VulcanService)
 
-	req, err := http.NewRequest("GET", "/health", nil)
+	req, err := http.NewRequest("GET", "/healthcheck", nil)
 	if err != nil {
 		t.Fatal(err)
 	}

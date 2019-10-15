@@ -24,87 +24,25 @@ An explorative way of learning how web analytics works at scale.
 * Strategy:
 
   - To scale, use sharding around collection endpoints where possible, so;
-  - Kong can be used as a front between APIs;
+  - Ambassador can be used as a front between APIs (e.g. https://vulcantracker.biz/
+    and https://report.vulcantracker.biz/);
   - Separation between services which isolate:
-      a. HTTP GET/web beacon API requests for analytics,
-      b. storage and retrieval of site specific data
-      c. presentation of retrieved analytics
+      a. HTTP GET/web beacon API requests and log data for queing analytic data,
+      b. workers which transform, validate and store data,
+      c. retrieval and presentation of composit analytics
 
 Further [rationale](docs/rationale.md) provided.
 
-## services ##
+To see how Vulcan works, see the [architecture](docs/architecture.md).
+To see what services Vulcan provides, see the [services](docs/services.md).
 
-The project is broken down into four major component services which have their
-respective areas of concern: gathering analytics, storing and retrieving
-records, generating and displaying reports, and providing documentation with
-examples;
-
-1. beacon
-
-  - Tracker endpoint which handles the request payload.
-  - Uses HTTP 204 No Content instead of a 1x1 transparent gif (Saving 35? bytes)
-  - Uses Web Beacon API with no response expected
-  - Runs against 127.0.0.1:8000 as vulcan beacon
-
-2. katric
-
-  - Handles database storage and retrieval operations between gocql and scylla.
-  - Runs against 127.0.0.1:8001 as vulcan katric
-
-3. scuttlebutt
-
-  - Client service to handle reporting.
-  - Works with a local copy of sharded ark data from katric.
-  - a report (often malicious) about the behavior of other people.
-  - Runs against 127.0.0.1:8002 as vulcan scuttlebutt
-
-4. ellipsis
-
-  - Server with example index.html that includes a tracker.
-  - (hopefully) includes extensive test client runs in excess of 10k requests,
-    with different payloads and tests.
-  - Runs against 127.0.0.1:8003 as vulcan ellipsis
-
-## License ##
+## license ##
 
 MIT - See [LICENSE.md](license.md)
 
-## Development ##
+## development ##
 
-Soon(tm) the vagrant provisioner and Dockerfile(s) will be available, so you
-may for example:
-
-  $ vagrant up
-
-And then have an entire ScyllaDB backed system available with:
-
-  http://localhost:8003/ - for tracking,
-  http://localhost:8002/ - for reporting.
-
-for now:
-
-### building ###
-
-  $ make
-
-### running ###
-
-  $ make run
-
-  or specifically;
-
-  $ cd bin
-  $ ./vulcan -h
-
-You may then locally run beacon, ellipsis, katric and scuttlebutt.  To generate
-some analytics and test the system, first go to:
-
-  http://localhost:8003/
-
-
-### testing ###
-
-  $ make test
+To run locally and develop, see [development.md](docs/development.md)
 
 ## contributing ##
 

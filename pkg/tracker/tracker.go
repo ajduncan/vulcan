@@ -1,6 +1,9 @@
 package tracker
 
 import (
+	"bytes"
+	"encoding/base64"
+	"encoding/gob"
 	"fmt"
 	"reflect"
 	"time"
@@ -79,6 +82,42 @@ func (t *Tracker) AddProperty(key string, value string) {
 	if v.IsValid() {
 		v.SetString(value)
 	}
+}
+
+// Serialize the tracker and return a string.
+func (t *Tracker) Serialize() string {
+	b := bytes.Buffer{}
+	e := gob.NewEncoder(&b)
+	gob.Register(Tracker{})
+	err := e.Encode(t)
+	if err != nil {
+		fmt.Printf("Encoding failed: %v\n", err)
+	}
+	return base64.StdEncoding.EncodeToString(b.Bytes())
+}
+
+// Deserialize takes an encoded string and returns a tracker.
+func Deserialize(data string) *Tracker {
+	t := &Tracker{}
+
+	decoded, err := base64.StdEncoding.DecodeString(data)
+	if err != nil {
+		// sentry
+		fmt.Printf("Decoding failed: %v\n", err)
+	}
+
+	b := bytes.Buffer{}
+	b.Write(decoded)
+	decoder := gob.NewDecoder(&b)
+
+	gob.Register(Tracker{})
+	err = decoder.Decode(&t)
+	if err != nil {
+		// sentry
+		fmt.Printf("Decoding failed: %v\n", err)
+	}
+
+	return t
 }
 
 // Print prints diagnostic information about the tracker and payload.

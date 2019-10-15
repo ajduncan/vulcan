@@ -169,7 +169,16 @@ https://www.eff.org/deeplinks/2018/06/gdpr-and-browser-fingerprinting-how-it-cha
 ## General Notes ##
 
 Decisions should be made regarding anonymization techniques and to work under
-the GDPR and to, in general, "never be evil."
+the GDPR and to, in general, "never be evil."  A recent article by [Kev Quirk](https://kevq.uk/why-you-shouldnt-use-facebook)
+outlines why you shouldn't use Facebook, and [how online tracking works](https://kevq.uk/how-online-tracking-works).
+
+With Vulcan, while we want to explore how tracking works, we don't want to create
+a platform which tracks people and builds profiles on them across every site
+that uses our api.  We want to track how visitors arrive at our site, measure
+how long they stay, what they click on, and in general, how effective a site is.  
+We do not want to create a platform for selling other people's data to third
+parties.
+
 
 ### Google ###
 

@@ -35,9 +35,22 @@ a good idea.  Example dependencies that are used:
   1. [Gorilla mux](https://github.com/gorilla/mux) for routing
   2. [gocql](https://github.com/gocql/gocql) for a ScyllaDB/Cassandra client
   3. [cobra commander](https://github.com/spf13/cobra) for CLI interaction
+  4. [go-redis](https://github.com/go-redis/redis) for a Redis client
+  5. [taskq](https://github.com/vmihailenco/taskq/) for a redis task queue
+
+Consider using convenience libraries that have no dependencies themselves, which
+further help ensure high standards.  We can include them directly, if licensed
+appropriately, with attribution:
+
+  1. [config](https://github.com/JeremyLoy/config) for easy 12FA configuration
 
 ## SOLID KISS ##
 
 Use [SOLID](https://en.wikipedia.org/wiki/SOLID) design principles and [keep it stupid simple](https://en.wikipedia.org/wiki/KISS_principle).
 
 See Dave Cheney's [SOLID Go Design](https://dave.cheney.net/2016/08/20/solid-go-design)
+
+## 12Factor ##
+
+Generally heroku's [The Twelve-Factor App](https://12factor.net/) guide should
+be followed.
